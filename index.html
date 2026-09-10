@@ -18,8 +18,8 @@
             <span class="text-teal-500 text-2xl">⚡</span> <span>Tech Logo</span>
         </div>
         <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-gray-600">
-            <a href="#" id="nav-overview" class="nav-link flex items-center space-x-2 hover:text-teal-600 px-3 py-2 rounded-full transition"><span class="text-lg">🏠</span><span>Overview</span></a>
-            <a href="#" id="nav-patients" class="nav-link flex items-center space-x-2 text-teal-600 bg-teal-50 px-4 py-2 rounded-full transition"><span class="text-lg">👥</span><span class="font-bold">Patients</span></a>
+            <a href="#" id="nav-overview" class="nav-link flex items-center space-x-2 text-teal-600 bg-teal-50 px-4 py-2 rounded-full transition"><span class="text-lg">🏠</span><span class="font-bold">Overview</span></a>
+            <a href="#" id="nav-patients" class="nav-link flex items-center space-x-2 hover:text-teal-600 px-3 py-2 rounded-full transition"><span class="text-lg">👥</span><span>Patients</span></a>
             <a href="#" id="nav-schedule" class="nav-link flex items-center space-x-2 hover:text-teal-600 px-3 py-2 rounded-full transition"><span class="text-lg">📅</span><span>Schedule</span></a>
             <a href="#" id="nav-message" class="nav-link flex items-center space-x-2 hover:text-teal-600 px-3 py-2 rounded-full transition"><span class="text-lg">💬</span><span>Message</span></a>
             <a href="#" id="nav-transactions" class="nav-link flex items-center space-x-2 hover:text-teal-600 px-3 py-2 rounded-full transition"><span class="text-lg">💳</span><span>Transactions</span></a>
@@ -37,186 +37,179 @@
         </div>
     </header>
 
-    <!-- MAIN CONTAINER (3-COLUMN GRID) -->
-    <div id="main-dashboard-container" class="max-w-[1440px] mx-auto p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-        
-        <!-- COLUMN 1: PATIENTS LIST (3 Cols) -->
-        <aside class="lg:col-span-3 bg-white rounded-2xl p-4 shadow-sm h-[calc(100vh-140px)] flex flex-col">
-            <div class="flex justify-between items-center mb-4 px-2">
-                <h2 class="font-bold text-xl text-gray-800">Patients</h2>
-                <button class="text-gray-500 hover:text-gray-700 font-bold">🔍</button>
-            </div>
-            <div id="patients-list-container" class="overflow-y-auto space-y-2 flex-1">
-                <!-- Dynamically populated patients list -->
-            </div>
-        </aside>
+    <!-- DYNAMIC CONTENT CONTAINER -->
+    <div class="max-w-[1440px] mx-auto p-6">
 
-        <!-- COLUMN 2: DIAGNOSIS HISTORY & METRICS (6 Cols) -->
-        <main class="lg:col-span-6 space-y-6 overflow-y-auto">
-            
-            <!-- Diagnosis History Card -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm">
-                <h2 class="font-bold text-lg text-gray-800 mb-4">Diagnosis History</h2>
-                
-                <div class="bg-[#F4F0FE] p-4 rounded-xl">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="font-bold text-sm text-gray-700">Blood Pressure</span>
-                        <span class="text-xs text-gray-500 flex items-center cursor-pointer">Last 6 months ▾</span>
-                    </div>
-                    
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
-                        <div class="md:col-span-2 relative h-48">
-                            <canvas id="bpChart"></canvas>
+        <!-- VIEW 1: OVERVIEW / PATIENTS DASHBOARD (Default 3-Column Layout) -->
+        <div id="view-overview" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <!-- COLUMN 1: PATIENTS LIST (3 Cols) -->
+            <aside class="lg:col-span-3 bg-white rounded-2xl p-4 shadow-sm h-[calc(100vh-140px)] flex flex-col">
+                <div class="flex justify-between items-center mb-4 px-2">
+                    <h2 class="font-bold text-xl text-gray-800">Patients</h2>
+                    <button class="text-gray-500 hover:text-gray-700 font-bold">🔍</button>
+                </div>
+                <div id="patients-list-container" class="overflow-y-auto space-y-2 flex-1">
+                    <!-- Dynamically populated -->
+                </div>
+            </aside>
+
+            <!-- COLUMN 2: DIAGNOSIS HISTORY & METRICS (6 Cols) -->
+            <main class="lg:col-span-6 space-y-6 overflow-y-auto h-[calc(100vh-140px)] pr-2">
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h2 class="font-bold text-lg text-gray-800 mb-4">Diagnosis History</h2>
+                    <div class="bg-[#F4F0FE] p-4 rounded-xl">
+                        <div class="flex justify-between items-center mb-4">
+                            <span class="font-bold text-sm text-gray-700">Blood Pressure</span>
+                            <span class="text-xs text-gray-500 flex items-center cursor-pointer">Last 6 months ▾</span>
                         </div>
-                        <div class="space-y-4 text-left border-l md:pl-4 border-purple-200">
-                            <div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="w-3 h-3 rounded-full bg-[#E66FD2] inline-block"></span>
-                                    <span class="text-xs font-semibold text-gray-600">Systolic</span>
-                                </div>
-                                <p id="systolic-value" class="text-xl font-bold mt-1">-</p>
-                                <p id="systolic-levels" class="text-xs text-gray-500 mt-0.5">-</p>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                            <div class="md:col-span-2 relative h-48">
+                                <canvas id="bpChart"></canvas>
                             </div>
-                            <hr class="border-purple-200">
-                            <div>
-                                <div class="flex items-center space-x-2">
-                                    <span class="w-3 h-3 rounded-full bg-[#8C6FE6] inline-block"></span>
-                                    <span class="text-xs font-semibold text-gray-600">Diastolic</span>
+                            <div class="space-y-4 text-left border-l md:pl-4 border-purple-200">
+                                <div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-3 h-3 rounded-full bg-[#E66FD2] inline-block"></span>
+                                        <span class="text-xs font-semibold text-gray-600">Systolic</span>
+                                    </div>
+                                    <p id="systolic-value" class="text-xl font-bold mt-1">-</p>
+                                    <p id="systolic-levels" class="text-xs text-gray-500 mt-0.5">-</p>
                                 </div>
-                                <p id="diastolic-value" class="text-xl font-bold mt-1">-</p>
-                                <p id="diastolic-levels" class="text-xs text-gray-500 mt-0.5">-</p>
+                                <hr class="border-purple-200">
+                                <div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="w-3 h-3 rounded-full bg-[#8C6FE6] inline-block"></span>
+                                        <span class="text-xs font-semibold text-gray-600">Diastolic</span>
+                                    </div>
+                                    <p id="diastolic-value" class="text-xl font-bold mt-1">-</p>
+                                    <p id="diastolic-levels" class="text-xs text-gray-500 mt-0.5">-</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- VITAL CARDS ROW -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Respiratory Rate -->
-                <div class="bg-[#E0F3FA] p-4 rounded-2xl flex flex-col justify-between">
-                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">🫁</div>
-                    <div>
-                        <p class="text-xs text-gray-600 font-medium">Respiratory Rate</p>
-                        <p id="respiratory-rate" class="text-2xl font-bold text-gray-800 mt-1">-</p>
-                    </div>
-                    <p id="respiratory-status" class="text-xs text-gray-500 mt-2">-</p>
-                </div>
-
-                <!-- Temperature -->
-                <div class="bg-[#FFE6E9] p-4 rounded-2xl flex flex-col justify-between">
-                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">🌡️</div>
-                    <div>
-                        <p class="text-xs text-gray-600 font-medium">Temperature</p>
-                        <p id="temperature-value" class="text-2xl font-bold text-gray-800 mt-1">-</p>
-                    </div>
-                    <p id="temperature-status" class="text-xs text-gray-500 mt-2">-</p>
-                </div>
-
-                <!-- Heart Rate -->
-                <div class="bg-[#FFE6F1] p-4 rounded-2xl flex flex-col justify-between">
-                    <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">❤️</div>
-                    <div>
-                        <p class="text-xs text-gray-600 font-medium">Heart Rate</p>
-                        <p id="heart-rate" class="text-2xl font-bold text-gray-800 mt-1">-</p>
-                    </div>
-                    <p id="heart-rate-status" class="text-xs text-gray-500 mt-2">-</p>
-                </div>
-            </div>
-
-            <!-- Diagnostic List Table -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm">
-                <h2 class="font-bold text-lg text-gray-800 mb-4">Diagnostic List</h2>
-                <div class="overflow-x-auto max-h-48 overflow-y-auto">
-                    <table class="w-full text-left border-collapse">
-                        <thead>
-                            <tr class="border-b text-xs text-gray-400 uppercase bg-gray-50 sticky top-0">
-                                <th class="py-3 px-4">Problem/Diagnosis</th>
-                                <th class="py-3 px-4">Description</th>
-                                <th class="py-3 px-4">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody id="diagnostic-table-body">
-                            <!-- Dynamically loaded -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </main>
-
-        <!-- COLUMN 3: PROFILE & LAB RESULTS (3 Cols) -->
-        <aside class="lg:col-span-3 space-y-6">
-            
-            <!-- Patient Profile Card -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm flex flex-col items-center text-center">
-                <img id="patient-avatar" src="" alt="Profile" class="w-24 h-24 rounded-full object-cover mb-3 border">
-                <h2 id="patient-name" class="text-lg font-bold text-gray-800 mb-6">-</h2>
-
-                <div class="w-full text-left space-y-4 text-sm text-gray-600 border-t pt-4">
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">📅</span>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-[#E0F3FA] p-4 rounded-2xl flex flex-col justify-between">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">🫁</div>
                         <div>
-                            <p class="text-xs text-gray-400">Date Of Birth</p>
-                            <p id="patient-dob" class="font-semibold text-gray-800 text-xs">-</p>
+                            <p class="text-xs text-gray-600 font-medium">Respiratory Rate</p>
+                            <p id="respiratory-rate" class="text-2xl font-bold text-gray-800 mt-1">-</p>
                         </div>
+                        <p id="respiratory-status" class="text-xs text-gray-500 mt-2">-</p>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">⚧</span>
+                    <div class="bg-[#FFE6E9] p-4 rounded-2xl flex flex-col justify-between">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">🌡️</div>
                         <div>
-                            <p class="text-xs text-gray-400">Gender</p>
-                            <p id="patient-gender" class="font-semibold text-gray-800 text-xs">-</p>
+                            <p class="text-xs text-gray-600 font-medium">Temperature</p>
+                            <p id="temperature-value" class="text-2xl font-bold text-gray-800 mt-1">-</p>
                         </div>
+                        <p id="temperature-status" class="text-xs text-gray-500 mt-2">-</p>
                     </div>
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">📞</span>
+                    <div class="bg-[#FFE6F1] p-4 rounded-2xl flex flex-col justify-between">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-sm mb-3">❤️</div>
                         <div>
-                            <p class="text-xs text-gray-400">Contact Info</p>
-                            <p id="patient-phone" class="font-semibold text-gray-800 text-xs">-</p>
+                            <p class="text-xs text-gray-600 font-medium">Heart Rate</p>
+                            <p id="heart-rate" class="text-2xl font-bold text-gray-800 mt-1">-</p>
                         </div>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">📞</span>
-                        <div>
-                            <p class="text-xs text-gray-400">Emergency Contacts</p>
-                            <p id="patient-emergency" class="font-semibold text-gray-800 text-xs">-</p>
-                        </div>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">🛡️</span>
-                        <div>
-                            <p class="text-xs text-gray-400">Insurance Provider</p>
-                            <p id="patient-insurance" class="font-semibold text-gray-800 text-xs">-</p>
-                        </div>
+                        <p id="heart-rate-status" class="text-xs text-gray-500 mt-2">-</p>
                     </div>
                 </div>
 
-                <button id="show-all-info-btn" class="mt-6 w-full bg-teal-400 hover:bg-teal-500 text-white font-medium py-2.5 px-4 rounded-full transition text-sm">
-                    Show All Information
-                </button>
-            </div>
-
-            <!-- Lab Results Card -->
-            <div class="bg-white p-6 rounded-2xl shadow-sm">
-                <h2 class="font-bold text-lg text-gray-800 mb-4">Lab Results</h2>
-                <div id="lab-results-container" class="space-y-3 max-h-48 overflow-y-auto">
-                    <!-- Dynamically loaded lab results -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h2 class="font-bold text-lg text-gray-800 mb-4">Diagnostic List</h2>
+                    <div class="overflow-x-auto max-h-48 overflow-y-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b text-xs text-gray-400 uppercase bg-gray-50 sticky top-0">
+                                    <th class="py-3 px-4">Problem/Diagnosis</th>
+                                    <th class="py-3 px-4">Description</th>
+                                    <th class="py-3 px-4">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="diagnostic-table-body"></tbody>
+                        </table>
+                    </div>
                 </div>
+            </main>
+
+            <!-- COLUMN 3: PROFILE & LAB RESULTS (3 Cols) -->
+            <aside class="lg:col-span-3 space-y-6 h-[calc(100vh-140px)] overflow-y-auto">
+                <div class="bg-white p-6 rounded-2xl shadow-sm flex flex-col items-center text-center">
+                    <img id="patient-avatar" src="" alt="Profile" class="w-24 h-24 rounded-full object-cover mb-3 border">
+                    <h2 id="patient-name" class="text-lg font-bold text-gray-800 mb-6">-</h2>
+                    <div class="w-full text-left space-y-4 text-sm text-gray-600 border-t pt-4">
+                        <div class="flex items-center space-x-3"><span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">📅</span><div><p class="text-xs text-gray-400">Date Of Birth</p><p id="patient-dob" class="font-semibold text-gray-800 text-xs">-</p></div></div>
+                        <div class="flex items-center space-x-3"><span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">⚧</span><div><p class="text-xs text-gray-400">Gender</p><p id="patient-gender" class="font-semibold text-gray-800 text-xs">-</p></div></div>
+                        <div class="flex items-center space-x-3"><span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">📞</span><div><p class="text-xs text-gray-400">Contact Info</p><p id="patient-phone" class="font-semibold text-gray-800 text-xs">-</p></div></div>
+                        <div class="flex items-center space-x-3"><span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">📞</span><div><p class="text-xs text-gray-400">Emergency Contacts</p><p id="patient-emergency" class="font-semibold text-gray-800 text-xs">-</p></div></div>
+                        <div class="flex items-center space-x-3"><span class="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center">🛡️</span><div><p class="text-xs text-gray-400">Insurance Provider</p><p id="patient-insurance" class="font-semibold text-gray-800 text-xs">-</p></div></div>
+                    </div>
+                    <button id="show-all-info-btn" class="mt-6 w-full bg-teal-400 hover:bg-teal-500 text-white font-medium py-2.5 px-4 rounded-full transition text-sm">Show All Information</button>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm">
+                    <h2 class="font-bold text-lg text-gray-800 mb-4">Lab Results</h2>
+                    <div id="lab-results-container" class="space-y-3 max-h-48 overflow-y-auto"></div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- VIEW 2: SCHEDULE (Fully Functional) -->
+        <div id="view-schedule" class="hidden bg-white p-8 rounded-2xl shadow-sm h-[calc(100vh-140px)] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Manage Appointments & Schedule</h2>
+                <button id="add-schedule-btn" class="bg-teal-500 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-teal-600 transition">+ Add Appointment</button>
             </div>
-
-        </aside>
-
-    </div>
-
-    <!-- MODAL CONTAINER FOR DYNAMIC VIEWS (Overview, Schedule, Messages, Transactions) -->
-    <div id="dynamic-modal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-        <div class="bg-white w-full max-w-2xl rounded-2xl shadow-xl p-6 relative">
-            <button id="close-modal-btn" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl font-bold">✕</button>
-            <h2 id="modal-title" class="text-xl font-bold text-gray-800 mb-4">Modal Title</h2>
-            <div id="modal-content" class="text-gray-600 text-sm">
-                <!-- Modal content goes here -->
+            <div id="schedule-list" class="space-y-4">
+                <!-- Dynamically loaded schedule items -->
             </div>
         </div>
+
+        <!-- VIEW 3: MESSAGE (Fully Functional Chat Inbox) -->
+        <div id="view-message" class="hidden bg-white rounded-2xl shadow-sm h-[calc(100vh-140px)] grid grid-cols-1 md:grid-cols-3 overflow-hidden">
+            <div class="border-r p-4 overflow-y-auto bg-gray-50">
+                <h3 class="font-bold text-lg mb-4">Patient Inbox</h3>
+                <div id="chat-list" class="space-y-2"></div>
+            </div>
+            <div class="md:col-span-2 flex flex-col justify-between p-6">
+                <div class="border-b pb-4 mb-4 flex justify-between items-center">
+                    <h3 id="active-chat-name" class="font-bold text-gray-800 text-lg">Select a conversation</h3>
+                    <span class="text-xs text-teal-600 bg-teal-50 px-2 py-1 rounded font-semibold">Active Session</span>
+                </div>
+                <div id="chat-messages" class="flex-1 overflow-y-auto space-y-3 pr-2 mb-4 text-sm">
+                    <p class="text-gray-400 text-center mt-20">Choose a patient from the left to view messages.</p>
+                </div>
+                <form id="chat-form" class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Type your reply as Dr. Simmons..." class="flex-1 border rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-teal-500" disabled>
+                    <button type="submit" id="chat-submit" class="bg-teal-500 text-white px-6 py-2 rounded-xl text-sm font-semibold hover:bg-teal-600 transition disabled:bg-gray-300" disabled>Send</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- VIEW 4: TRANSACTIONS (Fully Functional Billing Table) -->
+        <div id="view-transactions" class="hidden bg-white p-8 rounded-2xl shadow-sm h-[calc(100vh-140px)] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-gray-800">Billing & Transactions</h2>
+                <button id="add-transaction-btn" class="bg-teal-500 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-teal-600 transition">+ New Invoice</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b text-xs text-gray-400 uppercase bg-gray-50">
+                            <th class="py-3 px-4">Invoice ID</th>
+                            <th class="py-3 px-4">Patient Name</th>
+                            <th class="py-3 px-4">Description</th>
+                            <th class="py-3 px-4">Status</th>
+                            <th class="py-3 px-4 text-right">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transactions-table-body">
+                        <!-- Dynamically loaded -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
 
     <!-- Script -->
