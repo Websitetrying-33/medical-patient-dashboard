@@ -2,7 +2,7 @@ let globalPatientsData = [];
 let bpChart = null;
 let currentActiveChatPatient = null;
 
-// Mock database para sa Schedule at Transactions para fully functional
+// Mock database para sa Schedule at Transactions
 let scheduleData = [
     { id: 1, patient: "Jessica Taylor", type: "Routine Consultation", date: "Oct 12, 2026 - 10:00 AM", status: "Confirmed" },
     { id: 2, patient: "Ryan Johnson", type: "Follow-up Checkup", date: "Oct 14, 2026 - 02:30 PM", status: "Pending" },
@@ -38,6 +38,30 @@ document.addEventListener("DOMContentLoaded", () => {
     setupInteractiveActions();
 });
 
+// Modern Toast Notification Function (Pamalit sa alert())
+function showToast(message, type = "success") {
+    let container = document.getElementById("toast-container");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "toast-container";
+        container.className = "fixed bottom-5 right-5 z-50 flex flex-col space-y-2";
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement("div");
+    const bgColor = type === "success" ? "bg-teal-600" : "bg-gray-800";
+    toast.className = `${bgColor} text-white px-4 py-3 rounded-xl shadow-lg text-sm font-medium toast-slide-in flex items-center space-x-2`;
+    toast.innerHTML = `<span>${type === 'success' ? '✅' : 'ℹ️'}</span><span>${message}</span>`;
+
+    container.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.remove("toast-slide-in");
+        toast.classList.add("toast-slide-out");
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 // Navigation Switcher Logic
 function setupNavigationViews() {
     const navLinks = document.querySelectorAll(".nav-link");
@@ -55,10 +79,8 @@ function setupNavigationViews() {
             navLinks.forEach(l => l.classList.remove("text-teal-600", "bg-teal-50", "font-bold"));
             link.classList.add("text-teal-600", "bg-teal-50", "font-bold");
 
-            // I-hide lahat ng views
             Object.values(views).forEach(v => v.classList.add("hidden"));
 
-            // I-show ang piniling view
             const targetView = views[link.id];
             if (targetView) {
                 targetView.classList.remove("hidden");
@@ -69,32 +91,51 @@ function setupNavigationViews() {
     });
 }
 
+// Patients List with Real-Time Search Filtering
 function populatePatientsList(patients) {
     const container = document.getElementById("patients-list-container");
-    container.innerHTML = "";
 
-    patients.forEach(patient => {
-        const item = document.createElement("div");
-        const isJessica = patient.name === "Jessica Taylor";
-        
-        item.className = `flex items-center justify-between p-3 rounded-xl cursor-pointer transition ${isJessica ? 'bg-[#07CBD9]/15' : 'hover:bg-gray-50'}`;
-        item.innerHTML = `
-            <div class="flex items-center space-x-3">
-                <img src="${patient.profile_picture}" alt="${patient.name}" class="w-12 h-12 rounded-full object-cover">
-                <div>
-                    <p class="font-bold text-sm text-gray-800">${patient.name}</p>
-                    <p class="text-xs text-gray-400">${patient.gender}, ${patient.age}</p>
+    const renderList = (filteredPatients) => {
+        container.innerHTML = "";
+        if (filteredPatients.length === 0) {
+            container.innerHTML = `<p class="text-xs text-gray-400 text-center py-4">No patients found.</p>`;
+            return;
+        }
+
+        filteredPatients.forEach(patient => {
+            const item = document.createElement("div");
+            const isJessica = patient.name === "Jessica Taylor";
+            
+            item.className = `flex items-center justify-between p-3 rounded-xl cursor-pointer transition ${isJessica ? 'bg-[#07CBD9]/15' : 'hover:bg-gray-50'}`;
+            item.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <img src="${patient.profile_picture}" alt="${patient.name}" class="w-12 h-12 rounded-full object-cover">
+                    <div>
+                        <p class="font-bold text-sm text-gray-800">${patient.name}</p>
+                        <p class="text-xs text-gray-400">${patient.gender}, ${patient.age}</p>
+                    </div>
                 </div>
-            </div>
-            <span class="text-gray-400 font-bold">...</span>
-        `;
+                <span class="text-gray-400 font-bold">...</span>
+            `;
 
-        item.addEventListener("click", () => {
-            loadPatientData(patient);
+            item.addEventListener("click", () => {
+                loadPatientData(patient);
+            });
+
+            container.appendChild(item);
         });
+    };
 
-        container.appendChild(item);
-    });
+    renderList(patients);
+
+    const searchInput = document.getElementById("patient-search-input");
+    if (searchInput) {
+        searchInput.addEventListener("input", (e) => {
+            const query = e.target.value.toLowerCase();
+            const filtered = patients.filter(p => p.name.toLowerCase().includes(query));
+            renderList(filtered);
+        });
+    }
 }
 
 function loadPatientData(patient) {
@@ -151,7 +192,7 @@ function loadPatientData(patient) {
                 <span class="text-gray-700">${lab}</span>
                 <span class="text-teal-600 font-semibold text-xs bg-teal-50 px-2 py-1 rounded">Download</span>
             `;
-            labItem.addEventListener("click", () => alert(`Downloading lab result: ${lab}`));
+            labItem.addEventListener("click", () => showToast(`Downloading lab result: ${lab}`));
             labContainer.appendChild(labItem);
         });
     }
@@ -186,7 +227,6 @@ function updateBloodPressureChart(history) {
     });
 }
 
-// Working Schedule View
 function renderScheduleTable() {
     const container = document.getElementById("schedule-list");
     container.innerHTML = "";
@@ -204,7 +244,6 @@ function renderScheduleTable() {
     });
 }
 
-// Working Message Inbox View
 function setupChatInbox(patients) {
     const chatList = document.getElementById("chat-list");
     const chatMessages = document.getElementById("chat-messages");
@@ -213,7 +252,6 @@ function setupChatInbox(patients) {
     const activeChatName = document.getElementById("active-chat-name");
     const chatForm = document.getElementById("chat-form");
 
-    // Mock chat histories
     const messagesStore = {};
     patients.forEach(p => {
         messagesStore[p.name] = [
@@ -276,7 +314,6 @@ function renderMessages(messages, container) {
     container.scrollTop = container.scrollHeight;
 }
 
-// Working Transactions View
 function renderTransactionsTable() {
     const tbody = document.getElementById("transactions-table-body");
     tbody.innerHTML = "";
@@ -294,10 +331,9 @@ function renderTransactionsTable() {
     });
 }
 
-// Action Buttons Setup
 function setupInteractiveActions() {
     document.getElementById("show-all-info-btn").addEventListener("click", () => {
-        alert("Comprehensive medical records and full patient history loaded successfully.");
+        showToast("Comprehensive medical records loaded successfully.");
     });
 
     document.getElementById("add-schedule-btn").addEventListener("click", () => {
@@ -305,7 +341,7 @@ function setupInteractiveActions() {
         if (patientName) {
             scheduleData.push({ id: scheduleData.length + 1, patient: patientName, type: "General Checkup", date: "Oct 20, 2026 - 11:00 AM", status: "Pending" });
             renderScheduleTable();
-            alert("New appointment added successfully!");
+            showToast("New appointment added successfully!");
         }
     });
 
@@ -314,9 +350,9 @@ function setupInteractiveActions() {
         if (patientName) {
             transactionsData.push({ id: `INV-2026-09${transactionsData.length}`, patient: patientName, desc: "Specialist Consultation", status: "Pending", amount: "₱1,200.00" });
             renderTransactionsTable();
-            alert("New invoice created successfully!");
+            showToast("New invoice created successfully!");
         }
     });
 
-    document.getElementById("settings-btn").addEventListener("click", () => alert("Practitioner Settings & Profile configuration loaded."));
+    document.getElementById("settings-btn").addEventListener("click", () => showToast("Practitioner Settings loaded.", "info"));
 }
