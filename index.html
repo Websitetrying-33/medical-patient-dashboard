@@ -50,9 +50,12 @@
         <div id="view-overview" class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             <!-- COLUMN 1: PATIENTS LIST (3 Cols) -->
             <aside class="lg:col-span-3 bg-white rounded-2xl p-4 shadow-sm h-[calc(100vh-140px)] flex flex-col">
-                <div class="flex justify-between items-center mb-4 px-2">
+                <div class="flex justify-between items-center mb-3 px-2">
                     <h2 class="font-bold text-xl text-gray-800">Patients</h2>
-                    <button class="text-gray-500 hover:text-gray-700 font-bold">🔍</button>
+                </div>
+                <!-- Real-Time Search Bar -->
+                <div class="mb-3 px-1">
+                    <input type="text" id="patient-search-input" placeholder="Search patient name..." class="w-full px-3 py-2 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-teal-500">
                 </div>
                 <div id="patients-list-container" class="overflow-y-auto space-y-2 flex-1">
                     <!-- Dynamically populated -->
@@ -166,9 +169,7 @@
                 <h2 class="text-2xl font-bold text-gray-800">Manage Appointments & Schedule</h2>
                 <button id="add-schedule-btn" class="bg-teal-500 text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-teal-600 transition">+ Add Appointment</button>
             </div>
-            <div id="schedule-list" class="space-y-4">
-                <!-- Dynamically loaded schedule items -->
-            </div>
+            <div id="schedule-list" class="space-y-4"></div>
         </div>
 
         <!-- VIEW 3: MESSAGE (Fully Functional Chat Inbox) -->
@@ -209,9 +210,7 @@
                             <th class="py-3 px-4 text-right">Amount</th>
                         </tr>
                     </thead>
-                    <tbody id="transactions-table-body">
-                        <!-- Dynamically loaded -->
-                    </tbody>
+                    <tbody id="transactions-table-body"></tbody>
                 </table>
             </div>
         </div>
